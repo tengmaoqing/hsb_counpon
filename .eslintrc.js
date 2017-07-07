@@ -29,10 +29,16 @@ module.exports = {
       'js': 'never',
       'vue': 'never'
     }],
+    'linebreak-style': ["error", "windows"],
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
       'optionalDependencies': ['test/unit/index.js']
     }],
+    "no-underscore-dangle": [
+        "error",
+        { "allow": ["foo_", "_bar"] }
+    ],
+    'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
   }

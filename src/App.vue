@@ -1,36 +1,53 @@
 <template>
   <div id="app">
-    <el-menu mode="horizontal" theme="dark" :default-active="activeIndex">
-      <el-menu-item index="1">
-        <router-link :to="{name: 'index'}">现金券发放</router-link>
-      </el-menu-item>
-     <!--  <el-menu-item index="2">
-        <router-link :to="{name: 'other'}">ohter</router-link>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <router-link :to="{name: 'other2'}">ohter2</router-link>
-      </el-menu-item> -->
-    </el-menu>
-    <div class="router-wrap-outer">
-      <router-view ></router-view>
-    </div>
+    <el-row>
+
+      <el-col>
+        <el-menu mode="horizontal" theme="dark" :default-active="activeIndex">
+<!--           <el-menu-item index="1">
+            <router-link :to="{name: 'index'}">现金券发放</router-link>
+          </el-menu-item>
+          <el-menu-item index="2">
+            <router-link :to="{name: 'sw'}">缓存文件控制</router-link>
+          </el-menu-item> -->
+
+          <el-submenu index="3">
+            <template slot="title">页面管理</template>
+
+            <el-menu-item :index="'2-' + index" v-for="(cate, index)  in categorys" :key="index">
+              <router-link :to="'/tables/' + cate.typeId">{{cate.des}}</router-link>
+            </el-menu-item>
+          </el-submenu>
+
+        </el-menu>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="3">
+        asider
+      </el-col>
+      <el-col :span="19">
+        <router-view ></router-view>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { Menu, MenuItem } from 'element-ui';
 
 export default {
   name: 'app',
-  components: {
-    'el-menu-item': MenuItem,
-    'el-menu': Menu,
-  },
-
   data() {
     return {
-      activeIndex: '1',
+      activeIndex: '3',
+      categorys: [],
     };
+  },
+
+  mounted() {
+    this.$http.get('/tableData/categorys').then((data) => {
+      this.categorys = data;
+    });
   },
 };
 </script>
@@ -45,7 +62,13 @@ export default {
   /*margin-top: 60px;*/
 }
 
-div.router-wrap-outer {
-  margin: 36px 0;
+body {
+  margin: 0;
+}
+
+.el-row {
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 </style>

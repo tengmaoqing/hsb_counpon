@@ -198,7 +198,9 @@ export default {
 
   methods: {
     dataHandle() {
-      Object.keys(this.moneys).forEach(item => (this.form[item] = this.moneys[item] * 100));
+      Object.keys(this.moneys).forEach((item) => {
+        this.form[item] = this.moneys[item] * 100;
+      });
     },
 
     onPickerSelect(v) {

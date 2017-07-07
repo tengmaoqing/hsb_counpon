@@ -1,0 +1,90 @@
+.hsb-header {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background-color: #000;
+    box-sizing: border-box;
+    color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 17px;
+    height: 48px;
+    line-height: 1;
+    padding: 0 10px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+}
+.hsb-header .hsb-button {
+    background-color: transparent;
+    border: 0;
+    box-shadow: none;
+    color: inherit;
+    display: inline-block;
+    padding: 0;
+    font-size: inherit
+}
+.hsb-header .hsb-button::after {
+    content: none;
+}
+.hsb-header.is-fixed {
+    top: 0;
+    right: 0;
+    left: 0;
+    position: fixed;
+    z-index: 1;
+}
+.hsb-header-button {
+    -webkit-box-flex: .5;
+        -ms-flex: .5;
+            flex: .5;
+}
+.hsb-header-button > a {
+    color: inherit;
+}
+.hsb-header-button.is-right {
+    text-align: right;
+}
+.hsb-header-button.is-left {
+    text-align: left;
+}
+.hsb-header-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.5;
+    font-size: inherit;
+    font-weight: 400;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+}
+
+.hsb-header .hsb-icon-right:after {
+    -webkit-transform: translateY(-50%) rotate(-135deg);
+    transform: translateY(-50%) rotate(-135deg);
+    right: auto;
+    left: 20px;
+    border-color: #fff;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    width: 12px;
+    height: 12px;
+}
+
+.hsb-icon-right:after {
+    border: 1px solid #666666;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    content: " ";
+    top: 50%;
+    right: 7px;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    -webkit-transform: translateY(-50%) rotate(45deg);
+    transform: translateY(-50%) rotate(45deg);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+}

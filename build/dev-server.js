@@ -63,6 +63,7 @@ app.use(hotMiddleware)
 // serve pure static assets
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
+app.use(express.static(path.join(__dirname, '../dist/static')))
 
 var uri = 'http://localhost:' + port
 
@@ -82,6 +83,15 @@ devMiddleware.waitUntilValid(() => {
 })
 
 var server = app.listen(port)
+
+process.on('message', function(m) {
+
+  if (m.exec === 'exit') {
+    console.log('webpakc 即将终止！');
+    server.close();
+    process.exit();
+  }
+});
 
 module.exports = {
   ready: readyPromise,

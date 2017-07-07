@@ -1,0 +1,14 @@
+
+.iframe-mouseover {
+  box-shadow: 0 0 0 1px #88ceff;
+  position: relative;
+}
+
+.iframe-edit-title {
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}

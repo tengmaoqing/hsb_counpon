@@ -9,7 +9,8 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: config.dev.entry,
+    // app: './components/test/index.js'
   },
   output: {
     path: config.build.assetsRoot,
@@ -21,11 +22,34 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src')
+      '@': resolve('src'),
+      'vue': 'vue/dist/vue.esm.js',
+      '^': resolve('components'),
     }
   },
   module: {
     rules: [
+      // {
+        // test: /\.html$/,
+        // use: [
+          // {
+          //   loader: "file-loader",
+          //   options: {
+          //     name: "[name]-dist.[ext]",
+          //   },
+          // },
+          // {
+          //   loader: "extract-loader",
+          // },
+          // {
+          //   loader: "html-loader",
+          //   options: {
+          //     attrs: ["img:src", "link:href"],
+          //     interpolate: true,
+          //   },
+          // },
+        // ],
+      // },
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
