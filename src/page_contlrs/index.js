@@ -22,7 +22,7 @@ window.getComputedStyle = (...args) => {
 
 function getCOMRoot(el) {
   let current = el;
-  while (current.tagName && current.tagName.toLowerCase !== 'body' && !current.getAttribute('data-child-wrap')) {
+  while (current.tagName && current.tagName.toLowerCase() !== 'body' && !current.getAttribute('data-child-wrap')) {
     current = current.parentNode;
   }
   return current;
@@ -34,7 +34,6 @@ const debounceedResize = debounce((el, data, cpmID) => {
   const pW = window.parseInt(window.getComputedStyle(parent).width);
   const w = `${(el.clientWidth / pW) * 100}%`;
   const h = `${(el.clientHeight / pH) * 100}%`;
-  console.log(w, h);
   const replacedHTML = updateStyle(data.content.html, {
     width: w,
     height: h,
@@ -86,8 +85,8 @@ const IframeCss = `
     .sort-parent {
       padding-bottom: 30px;
       position: relative;
-      height: 100%;
       box-sizing: border-box;
+      min-height: 100%;
     }
 
     .sort-parent:empty::after {
@@ -252,6 +251,11 @@ function bindDrag(window, document) {
     const data = findContentByRandID(store.state.pageInfo.content, cpmID);
     bar.setAttribute('data-drageable-bar', '');
     el.appendChild(bar);
+
+    bar.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      return false;
+    });
 
     bar.addEventListener('dblclick', () => {
       // mutilClick();

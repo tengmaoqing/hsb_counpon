@@ -105,7 +105,7 @@
       name: '',
       description: '',
       templateId: '',
-      dllId: '',
+      dllId: null,
       disabled: false,
       remark: '',
       commonSrc: [],

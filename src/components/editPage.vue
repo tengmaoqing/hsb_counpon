@@ -1,6 +1,6 @@
 <template>
 
-  <div class="page-wrap">
+  <div class="page-wrap" :class="{'is-fullscreen': fullscreen}">
     <el-row>
       <el-col :span="12">
         <h4>页面名称：{{pageName}}</h4>
@@ -51,7 +51,7 @@
         </el-table>
       </el-popover>
       <el-col>
-        <el-button-group>
+        <el-button-group class="actions">
           <!-- <el-button type="primary">暂存</el-button> -->
           <el-tooltip class="item" effect="dark" content="按模板、数据生成HTML。最好先填充字符串模板" placement="top-start">
             <el-button type="info" @click="genPage">只生成HTML</el-button>
@@ -67,13 +67,14 @@
           <el-button type="danger" @click="clearContent">清空页面</el-button>
           <el-button type="primary" @click="reloadContent">刷新页面</el-button>
           <el-button type="primary" v-popover:popover1>所有组件</el-button>
+          <el-button type="primary" @click="tofullscreen">全屏</el-button>
           <el-button type="primary" @click="dataVisibleToggle" icon="el-icon-view">查看页面数据</el-button>
         </el-button-group>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="24 - dataWith">
-        <iframe ref="iframe" width="100%" height="800px" ></iframe>
+      <el-col :span="24 - dataWith" >
+        <iframe ref="iframe" width="100%" ></iframe>
       </el-col>
 
       <el-col :span="dataWith" v-show="dataWith !== 0">
@@ -95,6 +96,26 @@
 
   .drageable {
     cursor: all-scroll;
+  }
+
+  iframe {
+    height: 800px;
+  }
+
+  .is-fullscreen iframe {
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+
+  .is-fullscreen .actions, .is-fullscreen iframe {
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+  }
+
+  .is-fullscreen .actions {
+   z-index: 10001;
   }
 </style>
 
@@ -136,6 +157,7 @@
         allCOMVisible: false,
         dataWith: 12,
         searchKey: '',
+        fullscreen: false,
       };
     },
 
@@ -293,6 +315,11 @@
 
       dataVisibleToggle() {
         this.dataWith = this.dataWith === 0 ? 12 : 0;
+      },
+
+      tofullscreen() {
+        this.fullscreen = !this.fullscreen;
+        this.dataWith = 0;
       },
 
       search() {
