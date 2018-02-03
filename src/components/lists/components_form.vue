@@ -13,6 +13,10 @@
 				<el-input v-model="form.html" type="textarea" auto-complete="off"></el-input>
 			</el-form-item>
 
+      <el-form-item label="变量">
+        <el-input v-model="form.vars" type="textarea" auto-complete="off"></el-input>
+      </el-form-item>
+
       <el-form-item label="HTML路径">
         <el-autocomplete
         class="inline-input"

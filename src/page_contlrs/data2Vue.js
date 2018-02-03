@@ -1,4 +1,5 @@
 import cheerio from 'cheerio';
+import Mustache from 'mustache';
 import { store } from '../store/state';
 
 function bindText($el, $) {
@@ -30,7 +31,8 @@ function dataToVue(data, updated) {
   // const tpl = `<div>
   //   ${data.html}
   // </div>`;
-  const tpl = data.html;
+  let tpl = data.html;
+  tpl = Mustache.render(tpl, JSON.parse(data.vars || null));
   const $ = cheerio.load(tpl);
   const $that = $('body').children();
 

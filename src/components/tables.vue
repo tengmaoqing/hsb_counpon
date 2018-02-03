@@ -92,6 +92,8 @@
       html: '<div></div>',
       pathJS: '',
       pathHTML: '',
+      vars: '',
+      options: '',
       isClosingTag: true,
     },
     templates: {
