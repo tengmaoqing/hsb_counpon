@@ -3,9 +3,9 @@ import Vue from 'vue';
 import ElementUI from 'element-ui';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import debounce from 'lodash/debounce';
+import { store, findContentByRandID } from '@/store/state';
 import SortWrap from '../components/sort';
-import { updateStyle } from './data_process';
-import { store, findContentByRandID } from '../store/state';
+// import { updateStyle } from './data_process';
 import Data2Vue from './data2Vue';
 
 Vue.use(ElementUI);
@@ -20,30 +20,33 @@ window.getComputedStyle = (...args) => {
   return getComputedStyle$1.call(window, ...args);
 };
 
+const updateStyle = (module, obj) => {
+  const currentStyle = JSON.parse(module.style || '{}');
+  const newStyle = Object.assign({}, currentStyle, obj);
+  store.commit('updateCotentByRandomID', {
+    $compoentRandomID: module.$compoentRandomID,
+    key: 'style',
+    value: JSON.stringify(newStyle),
+  });
+};
+
 function getCOMRoot(el) {
   let current = el;
-  while (current.tagName && current.tagName.toLowerCase !== 'body' && !current.getAttribute('data-child-wrap')) {
+  while (current.tagName && current.tagName.toLowerCase() !== 'body' && !current.getAttribute('data-child-wrap')) {
     current = current.parentNode;
   }
   return current;
 }
 
-const debounceedResize = debounce((el, data, cpmID) => {
+const debounceedResize = debounce((el, data) => {
   const parent = getCOMRoot(el);
   const pH = window.parseInt(window.getComputedStyle(parent).height);
   const pW = window.parseInt(window.getComputedStyle(parent).width);
   const w = `${(el.clientWidth / pW) * 100}%`;
   const h = `${(el.clientHeight / pH) * 100}%`;
-  console.log(w, h);
-  const replacedHTML = updateStyle(data.content.html, {
+  updateStyle(data.content, {
     width: w,
     height: h,
-  });
-
-  store.commit('updateCotentByRandomID', {
-    $compoentRandomID: cpmID,
-    key: 'html',
-    value: replacedHTML,
   });
 }, 300);
 
@@ -86,8 +89,8 @@ const IframeCss = `
     .sort-parent {
       padding-bottom: 30px;
       position: relative;
-      height: 100%;
       box-sizing: border-box;
+      min-height: 100%;
     }
 
     .sort-parent:empty::after {
@@ -253,6 +256,11 @@ function bindDrag(window, document) {
     bar.setAttribute('data-drageable-bar', '');
     el.appendChild(bar);
 
+    bar.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      return false;
+    });
+
     bar.addEventListener('dblclick', () => {
       // mutilClick();
       store.commit('updateCurrentLayer', {
@@ -263,15 +271,9 @@ function bindDrag(window, document) {
 
     window.startDrag(bar, el, null, () => {
       const [x, y] = posTFPrecent(el);
-      const replacedHTML = updateStyle(data.content.html, {
+      updateStyle(data.content, {
         top: y,
         left: x,
-      });
-
-      store.commit('updateCotentByRandomID', {
-        $compoentRandomID: cpmID,
-        key: 'html',
-        value: replacedHTML,
       });
     });
   });

@@ -2,86 +2,23 @@
 * @Author: tengmaoqing
 * @Date:   2017-12-22 10:34:42
 * @Last Modified by:   tengmaoqing
-* @Last Modified time: 2017-12-26 15:10:09
+* @Last Modified time: 2018-02-01 19:55:07
 */
 
 // by zhangxinxu welcome to visit my personal website http://www.zhangxinxu.com/
 // zxx.drag v1.0 2010-03-23 元素的拖拽实现
+//
+/**
+ * 针对张鑫旭写的拖动做了升级。
+ * 体现在 面向对象，可以 new 多个实例。
+ * 增加拖动结束回调 final 函数。
+ * 解决子元素拖动触发父元素点击事件的bug
+ */
 
 (function() {
-  // var params = {
-  //     left: 0,
-  //     top: 0,
-  //     currentX: 0,
-  //     currentY: 0,
-  //     flag: false,
-  //     initLeft: 0,
-  //     initTop: 0
-  // };
-  //获取相关CSS属性
   var getCss = function(o, key) {
       return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
   };
-
-  // //拖拽的实现
-  // var startDrag = function(bar, target, callback, final) {
-  //     if (getCss(target, "left") !== "auto") {
-  //         params.left = getCss(target, "left");
-  //     }
-  //     if (getCss(target, "top") !== "auto") {
-  //         params.top = getCss(target, "top");
-  //     }
-  //     //o是移动对象
-  //     bar.onmousedown = function(event) {
-  //         params.flag = true;
-  //         if (!event) {
-  //             event = window.event;
-  //             //防止IE文字选中
-  //             bar.onselectstart = function() {
-  //                 return false;
-  //             }
-  //         }
-  //         var e = event;
-  //         params.currentX = e.clientX;
-  //         params.currentY = e.clientY;
-  //         params.initLeft = params.left;
-  //         params.initTop = params.top;
-  //     };
-  //     document.onmouseup = function() {
-  //         params.flag = false;
-  //         if (getCss(target, "left") !== "auto") {
-  //             params.left = getCss(target, "left");
-  //         }
-  //         if (getCss(target, "top") !== "auto") {
-  //             params.top = getCss(target, "top");
-  //         }
-
-  //         if (params.initLeft === params.left && params.initTop === params.top) {
-  //           return;
-  //         }
-  //         final && final();
-  //     };
-  //     document.onmousemove = function(event) {
-  //         var e = event ? event : window.event;
-  //         if (!params.flag) {
-  //           return;
-  //         }
-
-  //         var nowX = e.clientX,
-  //             nowY = e.clientY;
-  //         var disX = nowX - params.currentX,
-  //             disY = nowY - params.currentY;
-  //         target.style.left = parseInt(params.left) + disX + "px";
-  //         target.style.top = parseInt(params.top) + disY + "px";
-  //         if (event.preventDefault) {
-  //             event.preventDefault();
-  //         }
-
-  //         if (typeof callback == "function") {
-  //             callback(parseInt(params.left) + disX, parseInt(params.top) + disY);
-  //         }
-  //     }
-  // };
   var oTarget = null;
   var oParams = null;
   var fCb = null;
@@ -90,6 +27,32 @@
   var StartDrag = function (params) {
     this.init(params);
   };
+
+  var modal = null;
+  var showModal = function () {
+    modal.style.display = 'block';
+  };
+
+  var hideModal = function () {
+    modal.style.display = 'none';
+  };
+  var getModal = function () {
+    if (modal) {
+      return modal;
+    }
+    modal = document.createElement('div');
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.zIndex = '100000';
+    hideModal();
+    document.body.appendChild(modal);
+    return modal;
+  };
+  getModal();
+
 
   StartDrag.prototype.init = function (params) {
 
@@ -126,7 +89,6 @@
         oParams = that.params;
         fFinal = that.final;
         fCb = that.callback;
-
         if (!event) {
             event = window.event;
             //防止IE文字选中
@@ -147,7 +109,6 @@
       if (!oTarget) {
         return;
       }
-
       oParams.flag = false;
       if (getCss(oTarget, "left") !== "auto") {
           oParams.left = getCss(oTarget, "left");

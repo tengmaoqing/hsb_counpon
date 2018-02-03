@@ -92,6 +92,8 @@
       html: '<div></div>',
       pathJS: '',
       pathHTML: '',
+      vars: '',
+      options: '',
       isClosingTag: true,
     },
     templates: {
@@ -105,7 +107,7 @@
       name: '',
       description: '',
       templateId: '',
-      dllId: '',
+      dllId: null,
       disabled: false,
       remark: '',
       commonSrc: [],

@@ -4,11 +4,11 @@ import Vuex from 'vuex';
 /* eslint-disable no-param-reassign */
 const store = new Vuex.Store({
   state: {
-    domProps: {},
+    domProps: '',
   },
   mutations: {
     updateDomProps(state, props) {
-      state.domProps = props;
+      state.domProps = props || '';
     },
   },
 });

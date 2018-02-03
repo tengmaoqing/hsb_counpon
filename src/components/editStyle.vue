@@ -18,7 +18,7 @@
 
   <el-card>
     <div slot="header">
-      为组件增加HTML属性（谨慎）
+      编辑组件style属性
       <el-button style="float: right;" type="primary" v-popover:popover4>增加</el-button>
     </div>
     <el-form-item :label="key" v-for="(item, key) in domProps" :key="key">
@@ -48,13 +48,18 @@
     data() {
       return {
         popoverVisible: false,
-        edits: {},
-        domProps: EditStore.state.domProps,
         prop: '',
+        edits: {},
+        // domProps: {},
       };
     },
 
     computed: {
+      domProps() {
+        const domProps = JSON.parse(EditStore.state.domProps || '{}');
+        this.init(domProps);
+        return domProps;
+      },
     },
 
     methods: {
@@ -66,7 +71,7 @@
       },
 
       confirm(key) {
-        EditStore.commit('updateDomProps', Object.assign(this.domProps));
+        EditStore.commit('updateDomProps', JSON.stringify(Object.assign({}, this.domProps)));
         this.edits[key] = false;
       },
 
@@ -77,6 +82,15 @@
       delProp(key) {
         this.$delete(this.domProps, key);
         delete this.domProps[key];
+        EditStore.commit('updateDomProps', JSON.stringify(Object.assign({}, this.domProps)));
+      },
+
+      init(domProps) {
+        const edit = {};
+        Object.keys(domProps).forEach((key) => {
+          edit[key] = false;
+        });
+        this.edits = edit;
       },
     },
 
