@@ -104,25 +104,13 @@
     },
 
     methods: {
-      // remoteMethod() {
-      //   // if (!query) {
-      //   this.loading = true;
-      //   Apis.getTemplates({}).then((data) => {
-      //     this.loading = false;
-      //     this.templates = data.docs;
-      //   });
-      //   // }
-      // },
-
-      // deleteTemplateId() {
-      //   this.form.templateId = '';
-      // },
+    },
+    updated() {
+      if (this.form && this.form.projectId && this.form.projectId._id) {
+        this.form.projectId = this.form.projectId._id;
+      }
     },
     mounted() {
-      if (!this.form.filename) {
-        this.form.filename = this.form.name;
-      }
-
       Apis.getProjects({}).then((data) => {
         this.projects = data.docs;
       });

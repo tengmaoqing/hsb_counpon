@@ -36,7 +36,7 @@ module.exports = {
     }],
     "no-underscore-dangle": [
         "error",
-        { "allow": ["foo_", "_bar"] }
+        { "allow": ["_id"] }
     ],
     'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
     // allow debugger during development
