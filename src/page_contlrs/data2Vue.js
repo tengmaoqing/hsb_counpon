@@ -2,22 +2,22 @@ import cheerio from 'cheerio';
 import Mustache from 'mustache';
 import { store } from '../store/state';
 
-function bindText($el, $) {
-  // console.log($el.contents());
+// function bindText($el, $) {
+//   // console.log($el.contents());
 
-  $el.contents().each((index, item) => {
-    const $item = $(item);
+//   $el.contents().each((index, item) => {
+//     const $item = $(item);
 
-    if (item.nodeType === Node.TEXT_NODE) {
-      // console.log($item.text());
-      // item.nodeValue = '{{sdffg}}';
-    }
+//     if (item.nodeType === Node.TEXT_NODE) {
+//       // console.log($item.text());
+//       // item.nodeValue = '{{sdffg}}';
+//     }
 
-    if ($item.contents().length) {
-      bindText($item, $);
-    }
-  });
-}
+//     if ($item.contents().length) {
+//       bindText($item, $);
+//     }
+//   });
+// }
 
 // const imgReplacer = (html, preImg) => {
 //   const $ = cheerio.load(html, {
@@ -26,17 +26,26 @@ function bindText($el, $) {
 //   $('img').eq(preImg.index).attr('src', preImg.src);
 //   return $('body').html();
 // };
+const encodeVueTag = html => html.replace(/(\s+)(:)(\w+=)/g, '$1tmqx1$3')
+.replace(/(\s+)(v)(-\w+=)/g, '$1tmqx2$3')
+.replace(/(\s+)(@)(\w+=)/g, '$1tmqx3$3');
+
+const decodeVueTag = html => html.replace(/(\s+)(tmqx1)(\w+=)/g, '$1:$3')
+.replace(/(\s+)(tmqx2)(-\w+=)/g, '$1v$3')
+.replace(/(\s+)(tmqx3)(\w+=)/g, '$1@$3');
 
 function dataToVue(data, updated) {
   // const tpl = `<div>
   //   ${data.html}
   // </div>`;
-  let tpl = data.html;
+  const originHTML = data.html;
+  let tpl = encodeVueTag(originHTML);
+  const replacedTpl = tpl;
   tpl = Mustache.render(tpl, JSON.parse(data.vars || '{}'));
   const $ = cheerio.load(tpl);
   const $that = $('body').children();
 
-  bindText($that, $);
+  // bindText($that, $);
   $that.append(`
   <el-popover
     ref="popover3"
@@ -112,6 +121,9 @@ function dataToVue(data, updated) {
           this.$set(this.style, 'position', 'relative');
         }
       });
+      if (replacedTpl !== originHTML) {
+        this.$el.outerHTML = decodeVueTag(originHTML);
+      }
       if (updated) {
         updated(this.data.$compoentRandomID);
       }

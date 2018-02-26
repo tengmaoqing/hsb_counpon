@@ -64,8 +64,9 @@ const IframeCss = `
 
     .vue-wrap-nav {
       position: absolute;
-      top: -15px;
+      top: 0;
       left: 0;
+      z-index:10000;
       width: 100%;
       height: 20px;
       display: none;
@@ -261,13 +262,14 @@ function bindDrag(window, document) {
       return false;
     });
 
-    bar.addEventListener('dblclick', () => {
-      // mutilClick();
-      store.commit('updateCurrentLayer', {
-        state: true,
-        cpm: data.content,
-      });
-    });
+    // bar.addEventListener('contextmenu', () => {
+    //   console.log(1);
+    //   // mutilClick();
+    //   store.commit('updateCurrentLayer', {
+    //     state: true,
+    //     cpm: data.content,
+    //   });
+    // });
 
     window.startDrag(bar, el, null, () => {
       const [x, y] = posTFPrecent(el);
